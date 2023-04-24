@@ -1,30 +1,22 @@
+import asyncio
 import logging
-from telegram.ext import Application, MessageHandler, filters
-from config import TOKEN
-from telegram.ext import CommandHandler
-from Start import start
-from Help import help_command
-from wherethebus import wherethebus
-from telegram import ReplyKeyboardMarkup
+from aiogram import Dispatcher
+import Start
+import wherethebus
+from config import bot
+
+# Запуск процесса поллинга новых апдейтов
+async def main():
+    # Включаем логирование, чтобы не пропустить важные сообщения
+    logging.basicConfig(level=logging.INFO)
+    # Объект бота
+    # Диспетчер
+    dp = Dispatcher()
+
+    dp.include_router(Start.router)
+    dp.include_router(wherethebus.router)
+    await dp.start_polling(bot)
 
 
-# Запускаем логгирование
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG
-)
-
-logger = logging.getLogger(__name__)
-
-
-def main():
-    application = Application.builder().token(TOKEN).build()
-
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("help", help_command))
-    application.add_handler(CommandHandler("wherethebus", wherethebus))
-
-    application.run_polling()
-
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    asyncio.run(main())
