@@ -1,3 +1,4 @@
+import telegram.constants
 from aiogram import Router, Bot
 from config import bot
 from aiogram.filters import Command
@@ -12,6 +13,7 @@ from keyboards import start_builder, list_builder
 from messages import *
 
 router = Router()
+
 
 # ========================Создаём многоcтраничное, цикличное меню через колбеки============================================
 
@@ -103,13 +105,14 @@ async def show_list_of_station(callback: CallbackQuery):
                 '⁉️Что-то пошло не так, код ошибки: 4. Сообщите администрации об этом.'
             )
         try:
-            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно об этих остановках:\n'
+            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно' \
+                          f' об этих остановках (нажмите чтобы скопировать):\n---------------------------\n'
             num_of_page = users_dic[str(callback.from_user.id)][2]
             if num_of_page < 10:
                 num_of_page = 10
             for num in range(num_of_page - 10, num_of_page):
                 if num > 0 and num < len(dic):
-                    lst_message += '🚏' + f'{dic[num]}\n'
+                    lst_message += '🚏' + f"`{dic[num]}`\n---------------------------\n"
         except KeyError:
             return callback.answer(
                 '⁉️Что-то пошло не так, пожалуйста, откройте главное меню командой /start и попробуйте ещё раз.\n'
@@ -119,8 +122,10 @@ async def show_list_of_station(callback: CallbackQuery):
             caption=lst_message,
             chat_id=callback.from_user.id,
             message_id=callback.message.message_id,
-            reply_markup=list_builder.as_markup()
+            reply_markup=list_builder.as_markup(),
+            parse_mode='Markdown'
         )
+
 
 
 @router.callback_query(Text("minus"))
@@ -145,13 +150,14 @@ async def show_list_of_station(callback: CallbackQuery):
                 '⁉️Что-то пошло не так, код ошибки: 4. Сообщите администрации об этом.'
             )
         try:
-            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно об этих остановках:\n'
+            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно' \
+                          f' об этих остановках (нажмите чтобы скопировать):\n---------------------------\n'
             num_of_page = users_dic[str(callback.from_user.id)][2]
             if num_of_page < 10:
                 num_of_page = 10
             for num in range(num_of_page - 10, num_of_page):
                 if num > 0 and num < len(dic):
-                    lst_message += '🚏' + f'{dic[num]}\n'
+                    lst_message += '🚏' + f"`{dic[num]}`\n---------------------------\n"
         except KeyError:
             return callback.answer(
                 '⁉️Что-то пошло не так, пожалуйста, откройте главное меню командой /start и попробуйте ещё раз.\n'
@@ -161,7 +167,8 @@ async def show_list_of_station(callback: CallbackQuery):
             caption=lst_message,
             chat_id=callback.from_user.id,
             message_id=callback.message.message_id,
-            reply_markup=list_builder.as_markup()
+            reply_markup=list_builder.as_markup(),
+            parse_mode='Markdown'
         )
 
 
@@ -187,13 +194,14 @@ async def show_list_of_station(callback: CallbackQuery):
                 '⁉️Что-то пошло не так, код ошибки: 5. Сообщите администрации об этом.'
             )
         try:
-            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно об этих остановках:\n'
+            lst_message = f'В городе {users_dic[str(callback.from_user.id)][0]} мне известно' \
+                          f' об этих остановках (нажмите чтобы скопировать):\n---------------------------\n'
             num_of_page = users_dic[str(callback.from_user.id)][2]
             if num_of_page < 10:
                 num_of_page = 10
             for num in range(num_of_page - 10, num_of_page):
                 if num > 0 and num < len(dic):
-                    lst_message += '🚏' + f'{dic[num]}\n'
+                    lst_message += '🚏' + f"`{dic[num]}`\n---------------------------\n"
         except KeyError:
             return callback.answer(
                 '⁉️Что-то пошло не так, пожалуйста, откройте главное меню командой /start и попробуйте ещё раз.\n'
@@ -203,5 +211,6 @@ async def show_list_of_station(callback: CallbackQuery):
             caption=lst_message,
             chat_id=callback.from_user.id,
             message_id=callback.message.message_id,
-            reply_markup=list_builder.as_markup()
+            reply_markup=list_builder.as_markup(),
+            parse_mode='Markdown'
         )

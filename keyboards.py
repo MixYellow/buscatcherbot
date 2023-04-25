@@ -8,7 +8,7 @@ start_button1 = InlineKeyboardButton(
     callback_data="help"
 )
 start_button2 = InlineKeyboardButton(
-    text="🍩" + "Донат",
+    text="🐠" + "Донат",
     callback_data="donate"
 )
 start_button3 = InlineKeyboardButton(
