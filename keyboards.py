@@ -19,7 +19,7 @@ start_builder.row(start_button1, start_button2)
 start_builder.row(start_button3)
 # ===================================================================
 
-# ===========================List_keyboard=============================
+# ===========================List_keyboard===========================
 list_builder = InlineKeyboardBuilder()
 list_button1 = InlineKeyboardButton(
     text="⬅️" + 'Назад',
@@ -37,3 +37,27 @@ list_builder.row(list_button1, list_button2)
 list_builder.row(list_button3)
 
 # ====================================================================
+
+# ============================Help_keyboard===========================
+help_builder = InlineKeyboardBuilder()
+help_builder.add(InlineKeyboardButton(
+    text="⬅️" + 'Назад',
+    callback_data='back'
+))
+help_builder.add(
+    InlineKeyboardButton(
+        text="📢Администрация",
+        url="https://t.me/mixyellow"
+    )
+)
+# =====================================================================
+
+# =============================Donate_keyboard=========================
+
+donate_builder = InlineKeyboardBuilder()
+donate_builder.add(InlineKeyboardButton(
+    text="⬅️" + 'Назад',
+    callback_data='back'
+))
+
+# =====================================================================

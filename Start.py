@@ -1,5 +1,4 @@
-import telegram.constants
-from aiogram import Router, Bot
+from aiogram import Router
 from config import bot
 from aiogram.filters import Command
 from aiogram.filters.text import Text
@@ -9,7 +8,7 @@ from random import randint
 import json
 from contextlib import suppress
 from aiogram.exceptions import TelegramBadRequest
-from keyboards import start_builder, list_builder
+from keyboards import start_builder, list_builder, help_builder, donate_builder
 from messages import *
 
 router = Router()
@@ -30,60 +29,42 @@ async def start(message: Message):
             json.dump(dic, f, ensure_ascii=False, indent=4)
     except FileNotFoundError:
         return message.answer('⁉️Что-то пошло не так, код ошибки: 5. Сообщите администрации об этом.')
-    builder = start_builder
     await bot.send_photo(
         chat_id=message.chat.id,
         photo=FSInputFile(f'img/main_cat{randint(1, 7)}.jpg'),
         caption=start_message,
-        reply_markup=builder.as_markup()
+        reply_markup=start_builder.as_markup()
     )
 
 
 @router.callback_query(Text("help"))
 async def help_callback(callback: CallbackQuery):
-    builder = InlineKeyboardBuilder()
-    builder.add(InlineKeyboardButton(
-        text="⬅️" + 'Назад',
-        callback_data='back'
-    ))
-    builder.add(
-        InlineKeyboardButton(
-            text="📢Администрация",
-            url="https://t.me/mixyellow"
-        )
-    )
     await bot.edit_message_caption(
         caption=help_message,
         parse_mode='HTML',
         chat_id=callback.from_user.id,
         message_id=callback.message.message_id,
-        reply_markup=builder.as_markup(),
+        reply_markup=help_builder.as_markup(),
     )
 
 
 @router.callback_query(Text("donate"))
 async def donate_callback(callback: CallbackQuery):
-    builder = InlineKeyboardBuilder()
-    builder.add(InlineKeyboardButton(
-        text="⬅️" + 'Назад',
-        callback_data='back'
-    ))
     await bot.edit_message_caption(
         caption="Доната пока что нет😊",
         chat_id=callback.from_user.id,
         message_id=callback.message.message_id,
-        reply_markup=builder.as_markup()
+        reply_markup=donate_builder.as_markup()
     )
 
 
 @router.callback_query(Text("back"))
 async def start_callback(callback: CallbackQuery):
-    builder = start_builder
     await bot.edit_message_caption(
         caption=start_message,
         chat_id=callback.from_user.id,
         message_id=callback.message.message_id,
-        reply_markup=builder.as_markup()
+        reply_markup=start_builder.as_markup()
     )
 
 
@@ -125,7 +106,6 @@ async def show_list_of_station(callback: CallbackQuery):
             reply_markup=list_builder.as_markup(),
             parse_mode='Markdown'
         )
-
 
 
 @router.callback_query(Text("minus"))
